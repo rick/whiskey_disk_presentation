@@ -155,11 +155,24 @@ cap production deploy:update deploy:web:disable deploy:migrate \
 !SLIDE full-page
 
 !SLIDE full-page
-<img src="cheeta_fight.png">
+
+<img src="himalaya.png">
+
+!SLIDE full-page
+
+<img src="baby.png">
+
+!SLIDE full-page
+
+<img src="hiya.png">
 
 !SLIDE full-page
 
 <img src="pathankot.png">
+
+!SLIDE full-page
+
+<img src="cheeta_fight.png">
 
 
 !SLIDE commandline incremental
@@ -184,7 +197,29 @@ cap production deploy:update deploy:web:disable deploy:migrate \
 
 <img src="shit_bus.jpg" height="300">
 
+!SLIDE 
 
+<img src="problem.png">
+
+
+!SLIDE 
+
+<img src="git-deploy.png">
+
+<br/>
+<br/>
+<br/>
+
+<ul class="goodlist">
+<li> 'git push' to deploy </li>
+<li> lots of cool ideas </li>
+<li>  read the code and enjoy it </li>
+</ul>
+
+
+!SLIDE full-page
+
+<img src="github-article.png">
 
 
 !SLIDE full-page
