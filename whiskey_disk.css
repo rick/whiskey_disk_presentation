@@ -36,3 +36,8 @@ pre.sh_sourceCode  {
 .smallest  {
   font-size: 50%;
 }
+
+.left-block {
+  text-align: left;
+  align: left;
+}

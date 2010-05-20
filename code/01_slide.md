@@ -330,7 +330,7 @@
 
 !SLIDE code smaller
 
-# how big is this? (twss?)
+# how big is this? (twss)
 ### [ at least according to `wc -l` ]
 
 	   1 ./init.rb
@@ -347,4 +347,27 @@
 	 482 ./spec/whiskey_disk_spec.rb
 	1156 total
 
+!SLIDE code small
 
+# how fast is this? (twss?)
+### [ by completely arbitrary metric of the original slow deployment ]
+
+	before:  8+ minutes
+	after:   15-45 seconds(*)
+
+(*) from India, with the bulk of time allocated to reindexing sphinx indexes
+
+	typically: 8-15 seconds for a normal deployment
+
+!SLIDE
+
+# wins:
+
+### fast, supports local deployments, configuration separate from code, truly uses unmodified rake, YAML configuration, simple & clean code, fully TDD, fast test suite
+
+
+!SLIDE
+
+# next:
+
+### multi-project .yml file, even easier deployments for non-ruby projects, git-deploy inspired .changed?('db/migrate/') rake helper hooks, pre_deploy tasks?, rollbacks?, multi-server deploys?, per-environment post_deploy rake tasks?

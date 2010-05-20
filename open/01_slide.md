@@ -16,7 +16,7 @@
 </p>
 
 !SLIDE
-# Whiskey Disk #
+# Whiskey Disk: #
 ## for embarrassingly fast deployments
 
 <br/>
@@ -35,7 +35,8 @@
 
 !SLIDE full-page
 
-On the git hubs:  http://github.com/flogic/whiskey_disk
+### On the git hubs:  
+### http://github.com/flogic/whiskey_disk
 
 <br/>
 <br/>
