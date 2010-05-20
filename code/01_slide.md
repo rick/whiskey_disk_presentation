@@ -118,3 +118,131 @@
 
 <img src="flushtf.png">	
 
+
+!SLIDE code
+
+	@@@ruby
+  
+	def flush
+	  remote? ? run(bundle) : system(bundle)
+	end
+
+
+!SLIDE code smaller
+
+	@@@ruby
+
+	def flush
+	  remote? ? run(bundle) : system(bundle)
+	end
+
+	def run(cmd)
+	  needs(:domain)
+	  system('ssh', '-v', self[:domain], "set -x; " + cmd)
+	end
+
+
+
+!SLIDE code smaller
+
+	@@@ruby
+
+	def flush
+	  remote? ? run(bundle) : system(bundle)
+	end
+
+	def run(cmd)
+	  needs(:domain)
+	  system('ssh', '-v', self[:domain], "set -x; " + cmd)
+	end
+
+	def bundle
+	  return '' if buffer.empty?
+	  buffer.collect {|c| "{ #{c} ; }"}.join(' && ')
+	end
+
+
+!SLIDE code smaller
+
+	@@@ruby
+
+	def flush
+	  remote? ? run(bundle) : system(bundle)
+	end
+
+	def run(cmd)
+	  needs(:domain)
+	  system('ssh', '-v', self[:domain], "set -x; " + cmd)
+	end
+
+	def bundle
+	  return '' if buffer.empty?
+	  buffer.collect {|c| "{ #{c} ; }"}.join(' && ')
+	end
+	
+	def buffer
+	  @buffer ||= []
+	end
+	
+	def enqueue(command)
+	  buffer << command
+	end
+
+!SLIDE code smallest
+
+	@@@ruby
+
+	def bundle
+	  return '' if buffer.empty?
+	  buffer.collect {|c| "{ #{c} ; }"}.join(' && ')
+	end
+
+	def enqueue(command)
+	  buffer << command
+	end
+	
+	def checkout_main_repository
+	  needs(:deploy_to, :repository)
+	  enqueue "cd #{parent_path(self[:deploy_to])}"
+	  enqueue "git clone #{self[:repository]} #{tail_path(self[:deploy_to])} ; true"
+	end
+	
+	def update_main_repository_checkout
+	  needs(:deploy_to)
+	  enqueue "cd #{self[:deploy_to]}"
+	  enqueue "git fetch origin +refs/heads/#{branch}:refs/remotes/origin/#{branch}"
+	  enqueue "git reset --hard origin/#{branch}"
+	end
+  
+
+
+!SLIDE code smallest
+
+	@@@ruby
+
+	namespace :deploy do
+	  desc "Perform initial setup for deployment"
+	  task :setup do
+	    WhiskeyDisk.ensure_main_parent_path_is_present
+	    WhiskeyDisk.ensure_config_parent_path_is_present      if WhiskeyDisk.has_config_repo?
+	    WhiskeyDisk.checkout_main_repository
+	    WhiskeyDisk.checkout_configuration_repository         if WhiskeyDisk.has_config_repo?
+	    WhiskeyDisk.update_main_repository_checkout
+	    WhiskeyDisk.update_configuration_repository_checkout  if WhiskeyDisk.has_config_repo?
+	    WhiskeyDisk.refresh_configuration                     if WhiskeyDisk.has_config_repo?
+	    WhiskeyDisk.run_post_setup_hooks
+	    WhiskeyDisk.flush
+	  end
+
+	  desc "Deploy now."
+	  task :now do
+	    WhiskeyDisk.update_main_repository_checkout
+	    WhiskeyDisk.update_configuration_repository_checkout  if WhiskeyDisk.has_config_repo?
+	    WhiskeyDisk.refresh_configuration                     if WhiskeyDisk.has_config_repo?
+	    WhiskeyDisk.run_post_deploy_hooks
+	    WhiskeyDisk.flush
+	  end
+	end
+
+
+
