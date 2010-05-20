@@ -38,8 +38,7 @@
 	- should run any post setup hooks
 	- should flush WhiskeyDisk changes
 	
-	
-	
+
 !SLIDE 
 
 <img src="config_wtf.jpg">
@@ -53,7 +52,38 @@
 
 <img src="config_repo.png">	
 	
+!SLIDE full-page
 
+<img src="flow.png">	
+
+
+!SLIDE code smallest
+
+	@@@ruby
+
+	describe 'rake tasks' do
+	  before do
+	    Rake.application = @rake = Rake::Application.new
+	    load rakefile
+	    WhiskeyDisk.reset
+	  end
+	  
+	  after do
+	    Rake.application = nil
+	  end
+	  
+	  # ...
+	  
+	  it 'should make changes on the specified domain when a domain is specified' do
+	    @configuration = { 'domain' => 'some domain' }
+	    WhiskeyDisk::Config.stub!(:fetch).and_return(@configuration)
+	    @rake["deploy:setup"].invoke
+	    WhiskeyDisk.should.be.remote
+	  end
+	  
+	  # ...
+	end
+  
 
 !SLIDE code smallest
 
@@ -82,4 +112,9 @@
 	    WhiskeyDisk.flush
 	  end
 	end
+
+
+!SLIDE full-page
+
+<img src="flushtf.png">	
 
