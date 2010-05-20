@@ -246,8 +246,6 @@
 
 !SLIDE code smaller
 
-	@@@yaml
-	
 	# config/deploy.yml
 
 	production:
