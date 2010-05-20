@@ -244,5 +244,107 @@
 	  end
 	end
 
+!SLIDE code smaller
+
+	@@@yaml
+	
+	# config/deploy.yml
+
+	production:
+	  domain: "ogc@larry.ogtastic.com"
+	  deploy_to: "/opt/ogc/var/www/larry-production.ogtastic.com"
+	  deploy_config_to: "/opt/ogc/var/www/project_config"
+	  repository: "git://github.com/rick/larry.git"
+	  config_repository: "git@ogtastic.com:project_config.git"
+	  rake_env:
+	    RAILS_ENV: 'production'
+	
+	staging:
+	  domain: "ogc@larry.ogtastic.com"
+	  deploy_to: "/opt/ogc/var/www/larry-staging.ogtastic.com"
+	  deploy_config_to: "/opt/ogc/var/www/project_config"
+	  repository: "git://github.com/rick/larry.git"
+	  config_repository: "git@ogtastic.com:project_config.git"
+	  rake_env:
+	    RAILS_ENV: 'production'
+
+
+!SLIDE code smaller
+
+	@@@ruby
+	
+	# lib/tasks/deploy.rake
+	
+	namespace :deploy do
+	  task :create_rails_directories do
+	    puts "creating log/ and tmp/ directories"
+	    Dir.chdir(RAILS_ROOT)
+	    system("mkdir -p log tmp")
+	  end
+
+	  task :bounce_passenger do
+	    puts "restarting Passenger web server"
+	    Dir.chdir(RAILS_ROOT)
+	    system("touch tmp/restart.txt")    
+	  end
+
+	  task :post_setup => [ :create_rails_directories ]
+	  task :post_deploy => [ 'db:migrate', :bounce_passenger ]
+	end
+	
+
+
+!SLIDE code smallest
+
+	debug1: 
+		Sending command: set -x; { cd /opt/ogc/var/www/larry-production.ogtastic.com ; } && \
+	  { git fetch origin +refs/heads/master:refs/remotes/origin/master ; } && \
+	  { git reset --hard origin/master ; } && { cd /opt/ogc/var/www/project_config ; } && \
+	  { git fetch origin +refs/heads/master:refs/remotes/origin/master ; } && \
+	  { git reset --hard origin/master ; } && \
+	  { rsync -av .../project_config/larry/production/ .../larry-production.ogtastic.com/ ; } && \
+	  { cd /opt/ogc/var/www/larry-production.ogtastic.com ; } && 
+	  { RAILS_ENV='production'  rake --trace deploy:post_deploy to=production ; }
+	+ cd /opt/ogc/var/www/larry-production.ogtastic.com
+	+ git fetch origin +refs/heads/master:refs/remotes/origin/master
+	From git://github.com/rick/larry
+	   67f3d01..c5ae15c  master     -> origin/master
+	+ git reset --hard origin/master
+	HEAD is now at c5ae15c adding new version of whiskey_disk
+	+ cd /opt/ogc/var/www/project_config
+	+ git fetch origin +refs/heads/master:refs/remotes/origin/master
+	+ git reset --hard origin/master
+	HEAD is now at 42e5dda htpasswd file to lock down larry.ogtastic.com data from prying eyes
+	building file list ... 
+	6 files to consider
+	./
+	config/
+	+ rsync -av --progress /opt/ogc/var/www/project_config/larry/production/ \
+	                       /opt/ogc/var/www/larry-production.ogtastic.com/
+	sent 204 bytes  received 32 bytes  472.00 bytes/sec
+	total size is 672  speedup is 2.85
+	+ cd /opt/ogc/var/www/larry-production.ogtastic.com
+	+ RAILS_ENV=production
+	+ rake --trace deploy:post_deploy to=production
+	restarting Passenger web server
+
+!SLIDE code smaller
+
+# how big is this? (twss?)
+### [ at least according to `wc -l` ]
+
+	   1 ./init.rb
+	   5 ./install.rb
+	  36 ./lib/tasks/deploy.rb
+	  52 ./lib/whiskey_disk/config.rb
+	 130 ./lib/whiskey_disk.rb
+   	   2 ./tasks/deploy.rake
+	   9 ./spec/init_spec.rb
+	  42 ./spec/install_spec.rb
+	   5 ./spec/spec_helper.rb
+	 255 ./spec/tasks/deploy_spec.rb
+	 137 ./spec/whiskey_disk/config_spec.rb
+	 482 ./spec/whiskey_disk_spec.rb
+	1156 total
 
 
