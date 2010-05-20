@@ -180,6 +180,12 @@ cap production deploy:update deploy:web:disable deploy:migrate \
 		-bash: asdfgjkagg90g4#%gskd: command not found
 
 
+!SLIDE 
+
+<img src="shit_bus.jpg" height="300">
+
+
+
 
 !SLIDE full-page
 
