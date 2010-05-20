@@ -27,3 +27,12 @@ blockquote {
   font-size: 1.5em;
   line-height: 2em;
 }
+
+pre.sh_sourceCode  {
+  color: cyan;
+  background-color: black;
+}
+
+.smallest  {
+  font-size: 50%;
+}
