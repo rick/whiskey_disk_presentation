@@ -1,7 +1,22 @@
 body, #preso, .slide {
   background-color: black;
-  color: #7777cc;
+  color: #9999ee;
   border: none;
   margin: none;
 }
 
+blockquote {
+  color: white;
+}
+
+.larger {
+  font-size: 2em;
+}
+
+.highlight {
+  color: yellow;
+}
+
+.commandline code.command {
+  color: green;
+}
