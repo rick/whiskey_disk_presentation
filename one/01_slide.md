@@ -97,8 +97,11 @@ cap production deploy:update deploy:web:disable deploy:migrate \
 
 !SLIDE full-page
 
-<img src="pizzeria.jpg"/>
+<img src="cap-staging.png"/>
 
+!SLIDE full-page
+
+<img src="pizzeria.jpg"/>
 
 !SLIDE transition=uncover
 
