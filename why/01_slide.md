@@ -1,36 +1,3 @@
-!SLIDE
-# Whiskey Disk #
-## <span style="color: black;">foo</span> ##
-
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<p style="text-align: right;">
-	(rick bradley - <a href="mailto:rick@rickbradley.com">rick@rickbradley.com</a> // OG Consulting)
-</p>
-
-!SLIDE
-# Whiskey Disk #
-## for embarrassingly fast deployments
-
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<p style="text-align: right;">
-	(rick bradley - <a href="mailto:rick@rickbradley.com">rick@rickbradley.com</a> // OG Consulting)
-</p>
 
 !SLIDE code
 
@@ -59,6 +26,33 @@ cap production deploy:update deploy:web:disable deploy:migrate \
 </blockquote>
 </div>
 
+
+!SLIDE code
+
+<div class="larger">
+<blockquote>
+"Everything is hosted with EngineYard
+
+For deploys I do
+
+cap staging deploy
+
+or
+
+<span class="highlight">cap staging deploy:long # for migrations of course.</span>
+
+The app takes a while to restart, so for production I do
+
+cap production deploy:update deploy:web:disable deploy:restart \
+  deploy:cleanup ; sleep 15 ; cap production deploy:web:enable
+
+or
+
+cap production deploy:update deploy:web:disable deploy:migrate \
+  deploy:restart deploy:cleanup ; sleep 20 ; \
+  cap production deploy:web:enable"
+</blockquote>
+</div>
 
 !SLIDE code
 
@@ -147,6 +141,9 @@ cap production deploy:update deploy:web:disable deploy:migrate \
 
 <img src="vlad-2.png">
 
+!SLIDE full-page
+<img src="we_used_vlad.png">
+
 
 !SLIDE full-page
 
@@ -220,17 +217,4 @@ cap production deploy:update deploy:web:disable deploy:migrate \
 !SLIDE full-page
 
 <img src="github-article.png">
-
-
-!SLIDE full-page
-
-On the git hubs:  http://github.com/flogic/whiskey_disk
-
-<br/>
-<br/>
-<br/>
-<br/>
-
-<img src="og_logo.png">
-
 
