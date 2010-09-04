@@ -264,3 +264,6 @@ in fact, that data could be in a completely separate git repository
 <br/>
 <br/>
 ### multi-project .yml file, git-deploy inspired .changed?('db/migrate/') rake helper hooks, pre_deploy tasks?, rollbacks?, multi-server deploys?
+<br/>
+<br/>
+### using tools like larry or puppet-dashboard or ... ? to coordinate organization-wide deployment configurations
