@@ -1,43 +1,63 @@
-!SLIDE code smallest
 
-	rake tasks
-	
-	deploy:setup
-	- should make changes on the specified domain when a domain is specified
-	- should make changes on the local system when no domain is specified
-	- should ensure that the parent path for the main repository checkout is present
-	
-	when a configuration repo is specified
-	- should ensure that the parent path for the configuration repository checkout is present
 
-	when no configuration repo is specified
-	- should not ensure that the path for the configuration repository checkout is present
+!SLIDE larger
 
-	- should check out the main repository
+two operations: setup and deploy
 
-	when a configuration repository is specified
-	- should check out the configuration repository
+!SLIDE larger
 
-	when no configuration repository is specified
-	- should not check out the configuration repository
+use simple shell primitives to build a single command to run via a single SSH connection
 
-	- should update the main repository checkout
-	
-	when a configuration repository is specified
-	- should update the configuration repository checkout
+!SLIDE larger
 
-	when no configuration repository is specified
-	- should update the configuration repository checkout
+why track entire repos on target?  just track the branch of interest
 
-	when a configuration repository is specified
-	- should refresh the configuration
+!SLIDE larger
 
-	when no configuration repository is specified
-	- should not refresh the configuration
-	
-	- should run any post setup hooks
-	- should flush WhiskeyDisk changes
-	
+git reset instead of copying files around
+
+!SLIDE larger
+
+configuration data is just YAML
+
+!SLIDE larger
+
+post-setup and post-deploy hooks are just rake tasks
+
+!SLIDE larger
+
+works with anything, not just ruby apps
+
+!SLIDE larger
+
+supports separate configuration repo for data which varies from staging to production (for example)
+
+!SLIDE larger
+
+i.e., symlinking shit around is stupid
+
+!SLIDE larger
+
+supports local deployments, not just remote
+
+!SLIDE larger
+
+I have mirrors of different deployments of the same application on my laptop
+
+!SLIDE larger
+
+staleness checking, suitable for running under cron (get the developer out of the deployment loop!)
+
+!SLIDE larger
+
+continuous deployments
+
+!SLIDE larger
+
+local dependencies:  ruby, rake, ssh, rsync
+<br/>
+<br/>
+remote dependencies:  bash-compatible shell, ruby/rake (only if you want to run post-* hooks)
 
 !SLIDE 
 
@@ -56,34 +76,29 @@
 
 <img src="flow.png">	
 
+!SLIDE larger
 
-!SLIDE code smallest
+different AWS key files for production and staging
 
-	@@@ruby
+!SLIDE larger
 
-	describe 'rake tasks' do
-	  before do
-	    Rake.application = @rake = Rake::Application.new
-	    load rakefile
-	    WhiskeyDisk.reset
-	  end
-	  
-	  after do
-	    Rake.application = nil
-	  end
-	  
-	  # ...
-	  
-	  it 'should make changes on the specified domain when a domain is specified' do
-	    @configuration = { 'domain' => 'some domain' }
-	    WhiskeyDisk::Config.stub!(:fetch).and_return(@configuration)
-	    @rake["deploy:setup"].invoke
-	    WhiskeyDisk.should.be.remote
-	  end
-	  
-	  # ...
-	end
-  
+hoptoad config only in production
+
+!SLIDE larger
+
+anything in config/initializers/ could vary by target
+
+!SLIDE larger
+
+developers can manage configuration for all targets other than production
+
+!SLIDE larger
+
+but only one deployment manager has to know encryption keys, AWS keys, etc.
+
+!SLIDE larger
+
+in fact, that data could be in a completely separate git repository
 
 !SLIDE code smallest
 
@@ -102,140 +117,10 @@
 	    WhiskeyDisk.run_post_setup_hooks
 	    WhiskeyDisk.flush
 	  end
-	
-	  desc "Deploy now."
-	  task :now do
-	    WhiskeyDisk.update_main_repository_checkout
-	    WhiskeyDisk.update_configuration_repository_checkout  if WhiskeyDisk.has_config_repo?
-	    WhiskeyDisk.refresh_configuration                     if WhiskeyDisk.has_config_repo?
-	    WhiskeyDisk.run_post_deploy_hooks
-	    WhiskeyDisk.flush
-	  end
-	end
-
-
-!SLIDE full-page
-
-<img src="flushtf.png">	
-
-
-!SLIDE code
-
-	@@@ruby
-  
-	def flush
-	  remote? ? run(bundle) : system(bundle)
-	end
-
-
-!SLIDE code smaller
-
-	@@@ruby
-
-	def flush
-	  remote? ? run(bundle) : system(bundle)
-	end
-
-	def run(cmd)
-	  needs(:domain)
-	  system('ssh', '-v', self[:domain], "set -x; " + cmd)
-	end
-
-
-
-!SLIDE code smaller
-
-	@@@ruby
-
-	def flush
-	  remote? ? run(bundle) : system(bundle)
-	end
-
-	def run(cmd)
-	  needs(:domain)
-	  system('ssh', '-v', self[:domain], "set -x; " + cmd)
-	end
-
-	def bundle
-	  return '' if buffer.empty?
-	  buffer.collect {|c| "{ #{c} ; }"}.join(' && ')
-	end
-
-
-!SLIDE code smaller
-
-	@@@ruby
-
-	def flush
-	  remote? ? run(bundle) : system(bundle)
-	end
-
-	def run(cmd)
-	  needs(:domain)
-	  system('ssh', '-v', self[:domain], "set -x; " + cmd)
-	end
-
-	def bundle
-	  return '' if buffer.empty?
-	  buffer.collect {|c| "{ #{c} ; }"}.join(' && ')
-	end
-	
-	def buffer
-	  @buffer ||= []
-	end
-	
-	def enqueue(command)
-	  buffer << command
-	end
-
-!SLIDE code smallest
-
-	@@@ruby
-
-	def bundle
-	  return '' if buffer.empty?
-	  buffer.collect {|c| "{ #{c} ; }"}.join(' && ')
-	end
-
-	def enqueue(command)
-	  buffer << command
-	end
-	
-	def checkout_main_repository
-	  needs(:deploy_to, :repository)
-	  enqueue "cd #{parent_path(self[:deploy_to])}"
-	  enqueue "git clone #{self[:repository]} #{tail_path(self[:deploy_to])} ; true"
-	end
-	
-	def update_main_repository_checkout
-	  needs(:deploy_to)
-	  enqueue "cd #{self[:deploy_to]}"
-	  enqueue "git fetch origin +refs/heads/#{branch}:refs/remotes/origin/#{branch}"
-	  enqueue "git reset --hard origin/#{branch}"
-	end
-  
-
-
-!SLIDE code smallest
-
-	@@@ruby
-
-	namespace :deploy do
-	  desc "Perform initial setup for deployment"
-	  task :setup do
-	    WhiskeyDisk.ensure_main_parent_path_is_present
-	    WhiskeyDisk.ensure_config_parent_path_is_present      if WhiskeyDisk.has_config_repo?
-	    WhiskeyDisk.checkout_main_repository
-	    WhiskeyDisk.checkout_configuration_repository         if WhiskeyDisk.has_config_repo?
-	    WhiskeyDisk.update_main_repository_checkout
-	    WhiskeyDisk.update_configuration_repository_checkout  if WhiskeyDisk.has_config_repo?
-	    WhiskeyDisk.refresh_configuration                     if WhiskeyDisk.has_config_repo?
-	    WhiskeyDisk.run_post_setup_hooks
-	    WhiskeyDisk.flush
-	  end
 
 	  desc "Deploy now."
 	  task :now do
+	    WhiskeyDisk.enable_staleness_checks
 	    WhiskeyDisk.update_main_repository_checkout
 	    WhiskeyDisk.update_configuration_repository_checkout  if WhiskeyDisk.has_config_repo?
 	    WhiskeyDisk.refresh_configuration                     if WhiskeyDisk.has_config_repo?
@@ -361,7 +246,7 @@
 
 # wins:
 
-### fast, supports local deployments, configuration separate from code, truly uses unmodified rake, YAML configuration, simple & clean code, fully TDD, fast test suite
+### super duper frickin' fast, supports local deployments, configuration separate from code, truly uses unmodified rake, YAML configuration, simple & clean code, fully TDD, lightning fast test suite
 
 
 !SLIDE

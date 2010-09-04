@@ -35,12 +35,31 @@
 
 !SLIDE full-page
 
-### On the git hubs:  
+<img src="og_logo.png">
+<br/>
+<br/>
+<br/>
+<br/>
+
+!SLIDE full-page
+
+<br/>
+<br/>
+
+#### Live slides:
+### http://wdlightning.rickbradley.com
+
+<br/>
+<br/>
+
+#### On the git hubs:  
 ### http://github.com/flogic/whiskey_disk
 
-<br/>
-<br/>
+
 <br/>
 <br/>
 
-<img src="og_logo.png">
+#### Slides on the git hubs:
+### http://github.com/rick/whiskey_disk_presentation (#master, #lightning)
+
+

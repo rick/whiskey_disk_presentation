@@ -1,4 +1,16 @@
 
+!SLIDE larger
+
+Whiskey\_disk
+
+is a ruby tool 
+
+for deployments
+
+!SLIDE larger
+
+Why didn't I just use capistrano?
+
 !SLIDE code
 
 <div class="larger">
@@ -97,6 +109,11 @@ cap production deploy:update deploy:web:disable deploy:migrate \
 
 <img src="pizzeria.jpg"/>
 
+!SLIDE larger
+
+Why didn't I just use vlad?
+
+
 !SLIDE transition=uncover
 
 <img src="vlad-1.png"/>
@@ -153,24 +170,11 @@ cap production deploy:update deploy:web:disable deploy:migrate \
 
 !SLIDE full-page
 
-<img src="himalaya.png">
-
-!SLIDE full-page
-
-<img src="baby.png">
-
-!SLIDE full-page
-
 <img src="hiya.png">
 
 !SLIDE full-page
 
 <img src="pathankot.png">
-
-!SLIDE full-page
-
-<img src="cheeta_fight.png">
-
 
 !SLIDE commandline incremental
 
