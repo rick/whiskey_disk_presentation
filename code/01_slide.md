@@ -67,15 +67,6 @@ remote dependencies:  bash-compatible shell, ruby/rake (only if you want to run 
 <h1>WTF is a config repo?</h1>
 </div>
 
-
-!SLIDE full-page
-
-<img src="config_repo.png">	
-	
-!SLIDE full-page
-
-<img src="flow.png">	
-
 !SLIDE larger
 
 different AWS key files for production and staging
@@ -99,6 +90,14 @@ but only one deployment manager has to know encryption keys, AWS keys, etc.
 !SLIDE larger
 
 in fact, that data could be in a completely separate git repository
+
+!SLIDE full-page
+
+<img src="config_repo.png">	
+	
+!SLIDE full-page
+
+<img src="flow.png">	
 
 !SLIDE code smallest
 
