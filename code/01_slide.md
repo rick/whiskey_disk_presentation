@@ -216,19 +216,22 @@ in fact, that data could be in a completely separate git repository
 # how big is this? (twss)
 ### [ at least according to `wc -l` ]
 
-	   1 ./init.rb
-	   5 ./install.rb
-	  36 ./lib/tasks/deploy.rb
-	  52 ./lib/whiskey_disk/config.rb
-	 130 ./lib/whiskey_disk.rb
-   	   2 ./tasks/deploy.rake
-	   9 ./spec/init_spec.rb
-	  42 ./spec/install_spec.rb
-	   5 ./spec/spec_helper.rb
-	 255 ./spec/tasks/deploy_spec.rb
-	 137 ./spec/whiskey_disk/config_spec.rb
-	 482 ./spec/whiskey_disk_spec.rb
-	1156 total
+       1 ./init.rb
+       5 ./install.rb
+     124 ./lib/whiskey_disk/config.rb
+      37 ./lib/whiskey_disk/rake.rb
+     200 ./lib/whiskey_disk.rb
+     367 total
+
+!SLIDE code smaller
+
+       9 ./spec/init_spec.rb
+      42 ./spec/install_spec.rb
+     420 ./spec/wd_command_spec.rb
+     492 ./spec/whiskey_disk/config_spec.rb
+     261 ./spec/whiskey_disk/rake_spec.rb
+     793 ./spec/whiskey_disk_spec.rb
+    2017 total
 
 !SLIDE code small
 
@@ -251,6 +254,13 @@ in fact, that data could be in a completely separate git repository
 
 !SLIDE
 
+# recent: 
+
+### staleness checks, don't have to have ruby or rake on target, using git-flow for release / feature management
+
 # next:
 
-### multi-project .yml file, even easier deployments for non-ruby projects, git-deploy inspired .changed?('db/migrate/') rake helper hooks, pre_deploy tasks?, rollbacks?, multi-server deploys?, per-environment post_deploy rake tasks?
+### post-setup/post-deploy shell script ("bundle install --relock --unlock --force --wtf")
+<br/>
+<br/>
+### multi-project .yml file, git-deploy inspired .changed?('db/migrate/') rake helper hooks, pre_deploy tasks?, rollbacks?, multi-server deploys?
