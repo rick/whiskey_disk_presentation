@@ -255,7 +255,7 @@ in fact, that data could be in a completely separate git repository
 
 # recent: 
 
-### staleness checks, don't have to have ruby or rake on target, using git-flow for release / feature management
+### 'wd' command instead of just rake (allows managing multiple deployments centrally), staleness checks, don't have to have ruby or rake on target, using git-flow for release / feature management
 
 # next:
 
